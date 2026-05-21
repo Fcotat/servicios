@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios Escolares - EST 18</title>
+    <style>
+        :root {
+            --primary-sec: #0056b3;
+            --primary-med: #dc3545;
+            --bg-color: #f4f4f9;
+        }
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background-color: var(--bg-color); 
+            color: #333; 
+        }
+        .container { 
+            max-width: 600px; 
+            background: white; 
+            padding: 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            margin: 0 auto; 
+        }
+        h2 { 
+            text-align: center; 
+            margin-top: 0;
+            font-size: 24px;
+        }
+        .institucion {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Sistema de Pestañas (Tabs) */
+        .tabs { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 25px; 
+        }
+        .tab-btn { 
+            flex: 1; 
+            padding: 12px; 
+            border: none; 
+            background-color: #e0e0e0; 
+            color: #555; 
+            font-size: 15px; 
+            font-weight: bold; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active-sec { 
+            background-color: var(--primary-sec); 
+            color: white; 
+        }
+        .tab-btn.active-med { 
+            background-color: var(--primary-med); 
+            color: white; 
+        }
+
+        /* Formulario y Campos */
+        .form-section { 
+            display: none; 
+        }
+        .form-section.active { 
+            display: block; 
+        }
+        label { 
+            display: block; 
+            margin-top: 12px; 
+            font-weight: bold; 
+            font-size: 14px;
+        }
+        input, select, textarea { 
+            width: 100%; 
+            padding: 10px; 
+            margin-top: 5px; 
+            border: 1px solid #ccc; 
+            border-radius: 6px; 
+            box-sizing: border-box; 
+            font-size: 15px;
+        }
+        
+        /* Botón de Enviar (Estilo WhatsApp) */
+        .btn-enviar { 
+            background-color: #25D366; 
+            color: white; 
+            padding: 14px; 
+            border: none; 
+            border-radius: 6px; 
+            width: 100%; 
+            margin-top: 25px; 
+            font-size: 16px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+        .btn-enviar:hover { 
+            background-color: #128C7E; 
+        }
+        .btn-enviar:disabled {
+            background-color: #a5d6a7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="institucion">Escuela Secundaria Técnica Num. 18</div>
+    
+    <!-- Botones para alternar entre apartados -->
+    <div class="tabs">
+        <button class="tab-btn active-sec" id="btnSec" onclick="cambiarPestaña('SEC')">📋 Reportes SEC</button>
+        <button class="tab-btn" id="btnMed" onclick="cambiarPestaña('MEDICO')">🩺 Médico Escolar</button>
+    </div>
+
+    <!-- ================= APARTADO SEC ================= -->
+    <div id="sectionSEC" class="form-section active">
+        <h2 style="color: var(--primary-sec);">Servicio Educativo Complementario</h2>
+        <form id="formSEC">
+            <label for="alumnoSEC">Nombre del Alumno:</label>
+            <input type="text" id="alumnoSEC" placeholder="Ej. Juan Pérez López" required>
+
+            <label for="grupoSEC">Grado y Grupo:</label>
+            <select id="grupoSEC" required>
+                <option value="">Selecciona...</option>
+                <option value="2° D">2° D</option>
+                <!-- Puedes agregar aquí los demás grupos -->
+            </select>
+
+            <label for="tutorSEC">Nombre del Tutor:</label>
+            <input type="text" id="tutorSEC" placeholder="Ej. María López" required>
+
+            <label for="telefonoSEC">Teléfono del Tutor (10 dígitos):</label>
+            <input type="tel" id="telefonoSEC" placeholder="Ej. 9711234567" pattern="[0-9]{10}" required>
+
+            <label for="incidencia">Tipo de Incidencia:</label>
+            <select id="incidencia" required>
+                <option value="Inasistencia">Inasistencia</option>
+                <option value="Retardo">Retardo</option>
+                <option value="Falta de Tarea">Falta de Tarea</option>
+                <option value="Indisciplina en Clase">Indisciplina en Clase</option>
+                <option value="Felicitación Académica">Felicitación Académica</option>
+            </select>
+
+            <label for="detallesSEC">Detalles / Observaciones:</label>
+            <textarea id="detallesSEC" rows="4" placeholder="Describe brevemente la situación o acuerdos..." required></textarea>
+
+            <button type="button" class="btn-enviar" id="submitSEC" onclick="enviarFormulario('SEC')">Guardar y Enviar Alerta</button>
+        </form>
+    </div>
+
+    <!-- ================= APARTADO MÉDICO ================= -->
+    <div id="sectionMEDICO" class="form-section">
+        <h2 style="color: var(--primary-med);">Atención Médica Escolar</h2>
+        <form id="formMEDICO">
+            <label for="alumnoMED">Nombre del Alumno:</label>
+            <input type="text" id="alumnoMED" placeholder="Ej. Juan Pérez López" required>
+
+            <label for="grupoMED">Grado y Grupo:</label>
+            <select id="grupoMED" required>
+                <option value="">Selecciona...</option>
+                <option value="2° D">2° D</option>
+            </select>
+
+            <label for="tutorMED">Nombre del Tutor:</label>
+            <input type="text" id="tutorMED" placeholder="Ej. María López" required>
+
+            <label for="telefonoMED">Teléfono del Tutor (10 dígitos):</label>
+            <input type="tel" id="telefonoMED" placeholder="Ej. 9711234567" pattern="[0-9]{10}" required>
+
+            <label for="motivo">Motivo de la Visita:</label>
+            <input type="text" id="motivo" placeholder="Ej. Dolor de estómago, torcedura de tobillo" required>
+
+            <label for="tratamiento">Tratamiento Brindado:</label>
+            <textarea id="tratamiento" rows="3" placeholder="Ej. Se le tomó la temperatura (36.5°C) y se le dio reposo..." required></textarea>
+
+            <label for="estatus">Estatus de Salida:</label>
+            <select id="estatus" required>
+                <option value="Regresa a clases en observación">Regresa a clases en observación</option>
+                <option value="Se solicita que el tutor pase a recogerlo inmediatamente">⚠️ REQUERIDO: El tutor debe pasar a recogerlo</option>
+            </select>
+
+            <button type="button" class="btn-enviar" id="submitMED" onclick="enviarFormulario('MEDICO')">Guardar y Avisar al Tutor</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // URL DE TU GOOGLE APPS SCRIPT (Reemplázala con la tuya)
+    const WEB_APP_URL = "TU_URL_DE_GOOGLE_APPS_SCRIPT";
+
+    // Función para cambiar de pestaña visualmente
+    function cambiarPestaña(modulo) {
+        const btnSec = document.getElementById('btnSec');
+        const btnMed = document.getElementById('btnMed');
+        const secSection = document.getElementById('sectionSEC');
+        const medSection = document.getElementById('sectionMEDICO');
+
+        if (modulo === 'SEC') {
+            btnSec.classList.add('active-sec');
+            btnMed.classList.remove('active-med');
+            secSection.classList.add('active');
+            medSection.classList.remove('active');
+        } else {
+            btnMed.classList.add('active-med');
+            btnSec.classList.remove('active-sec');
+            medSection.classList.add('active');
+            secSection.classList.remove('active');
+        }
+    }
+
+    // Función unificada para procesar y enviar los datos
+    function enviarFormulario(modulo) {
+        const form = document.getElementById(`form${modulo}`);
+        const boton = document.getElementById(`submit${modulo}`);
+
+        // Validar campos del formulario activo
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        boton.innerText = "Guardando en Base de Datos...";
+        boton.disabled = true;
+
+        let datos = { modulo: modulo };
+        let urlWhatsApp = "";
+
+        // Recolectar datos y armar mensaje según el módulo activo
+        if (modulo === 'SEC') {
+            const alumno = document.getElementById('alumnoSEC').value;
+            const grupo = document.getElementById('grupoSEC').value;
+            const tutor = document.getElementById('tutorSEC').value;
+            const telefono = "52" + document.getElementById('telefonoSEC').value;
+            const incidencia = document.getElementById('incidencia').value;
+            const detalles = document.getElementById('detallesSEC').value;
+
+            datos.alumno = alumno;
+            datos.grupo = grupo;
+            datos.tutor = tutor;
+            datos.incidencia = incidencia;
+            datos.detalles = detalles;
+
+            const textoMsg = `Estimado(a) tutor(a) ${tutor}, le informamos que se ha registrado una incidencia en el Servicio Educativo Complementario de la Escuela Secundaria Técnica Num. 18.\n\n*Alumno:* ${alumno}\n*Grupo:* ${grupo}\n*Situación:* ${incidencia}\n*Detalles:* ${detalles}\n\nFavor de dar el seguimiento correspondiente.`;
+            urlWhatsApp = `https://wa.me/${telefono}?text=${encodeURIComponent(textoMsg)}`;
+
+        } else if (modulo === 'MEDICO') {
+            const alumno = document.getElementById('alumnoMED').value;
+            const grupo = document.getElementById('grupoMED').value;
+            const tutor = document.getElementById('tutorMED').value;
+            const telefono = "52" + document.getElementById('telefonoMED').value;
+            const motivo = document.getElementById('motivo').value;
+            const tratamiento = document.getElementById('tratamiento').value;
+            const estatus = document.getElementById('estatus').value;
+
+            datos.alumno = alumno;
+            datos.grupo = grupo;
+            datos.tutor = tutor;
+            datos.motivo = motivo;
+            datos.tratamiento = tratamiento;
+            datos.estatus = estatus;
+
+            const textoMsg = `*AVISO DEL SERVICIO MÉDICO ESCOLAR* 🩺\n\nEstimado(a) tutor(a) ${tutor}, le informamos que el alumno ${alumno} de ${grupo} acudió a la enfermería de la escuela.\n\n*Motivo:* ${motivo}\n*Atención brindada:* ${tratamiento}\n*Indicación:* _${estatus}_\n\nCualquier duda, favor de comunicarse con la institución.`;
+            urlWhatsApp = `https://wa.me/${telefono}?text=${encodeURIComponent(textoMsg)}`;
+        }
+
+        // Enviar a Google Sheets
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datos)
+        }).then(() => {
+            // Reestablecer el botón original
+            boton.innerText = modulo === 'SEC' ? "Guardar y Enviar Alerta" : "Guardar y Avisar al Tutor";
+            boton.disabled = false;
+
+            // Abrir WhatsApp Web o App móvil en pestaña nueva
+            window.open(urlWhatsApp, '_blank');
+            form.reset();
+        }).catch(error => {
+            alert("Error de conexión al guardar los datos, pero puedes intentar enviar la alerta de WhatsApp.");
+            boton.disabled = false;
+        });
+    }
+</script>
+</body>
+</html>

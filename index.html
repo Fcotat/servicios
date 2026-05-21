@@ -127,17 +127,17 @@
     <div id="sectionMEDICO" class="form-section">
         <h2 style="color: var(--primary-med); text-align: center; margin-top:0;">Atención Médica Escolar</h2>
         <form id="formMEDICO">
-            <label for="buscarMED">Buscar por Matrícula o Nombre del Alumno:</label>
-            <input type="text" id="buscarMED" list="listaAlumnosData" placeholder="Escribe para buscar..." onchange="autocompletar('MED')" required>
+            <label for="buscarMEDICO">Buscar por Matrícula o Nombre del Alumno:</label>
+            <input type="text" id="buscarMEDICO" list="listaAlumnosData" placeholder="Escribe para buscar..." onchange="autocompletar('MEDICO')" required>
 
-            <label for="grupoMED">Grado y Grupo:</label>
-            <input type="text" id="grupoMED" readonly placeholder="Se autocompleta automáticamente">
+            <label for="grupoMEDICO">Grado y Grupo:</label>
+            <input type="text" id="grupoMEDICO" readonly placeholder="Se autocompleta automáticamente">
 
-            <label for="tutorMED">Nombre del Tutor:</label>
-            <input type="text" id="tutorMED" readonly placeholder="Se autocompleta automáticamente">
+            <label for="tutorMEDICO">Nombre del Tutor:</label>
+            <input type="text" id="tutorMEDICO" readonly placeholder="Se autocompleta automáticamente">
 
-            <label for="telefonoMED">Teléfono del Tutor:</label>
-            <input type="text" id="telefonoMED" readonly placeholder="Se autocompleta automáticamente">
+            <label for="telefonoMEDICO">Teléfono del Tutor:</label>
+            <input type="text" id="telefonoMEDICO" readonly placeholder="Se autocompleta automáticamente">
 
             <label for="motivo">Motivo de la Consulta / Visita:</label>
             <input type="text" id="motivo" placeholder="Ej. Síntomas de gripe, torcedura por caída, etc." required>
@@ -170,7 +170,7 @@
     // =========================================================
     // PEGA AQUÍ TU URL COMPLETA DE GOOGLE APPS SCRIPT
     // =========================================================
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwJSYHJ61Rih0ZXC7YaR5TvJ_cHtPJWbUk0VLGJMzGx0HjtxP3aXe9p1jZm6pQAp3R0qQ/exec";
+    const WEB_APP_URL = "TU_URL_DE_GOOGLE_APPS_SCRIPT";
     
     let alumnosDB = []; // Se poblará desde el Google Sheet al cargar la página
 
@@ -183,7 +183,7 @@
             const datalist = document.getElementById('listaAlumnosData');
             alumnosDB.forEach(alumno => {
                 let option = document.createElement('option');
-                // Formato de sugerencia visual: "202601 - SEBASTIAN JIMENEZ SANTIAGO"
+                // Formato de sugerencia visual: "A1 - SEBASTIAN JIMENEZ SANTIAGO"
                 option.value = `${alumno.matricula} - ${alumno.nombre}`;
                 datalist.appendChild(option);
             });
@@ -197,7 +197,7 @@
         });
     };
 
-    // Función de auto-rellenado (Busca matrícula, nombre o formato combinado)
+    // Función inteligente de auto-rellenado (Busca matrícula, nombre o formato combinado)
     function autocompletar(modulo) {
         const valorBuscado = document.getElementById(`buscar${modulo}`).value.toUpperCase().trim();
         

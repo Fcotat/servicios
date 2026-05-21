@@ -6,13 +6,38 @@
     <title>Servicios Escolares - EST 18</title>
     <style>
         :root {
-            --primary-sec: #0056b3;
-            --primary-med: #dc3545;
+            --primary-guinda: #6A1B29; /* Guinda Institucional SEP/Tecnicas */
+            --primary-sec: #0056b3;    /* Azul SEC */
+            --primary-med: #dc3545;    /* Rojo Médico */
             --bg-color: #f4f4f9;
         }
         body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: var(--bg-color); color: #333; }
         .container { max-width: 600px; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin: 0 auto; }
-        .institucion { text-align: center; font-size: 14px; color: #666; margin-bottom: 20px; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
+        
+        /* Encabezado Institucional con Logo */
+        .header-institucional {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .logo-tecnicas {
+            width: 90px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .institucion { 
+            font-size: 16px; 
+            color: var(--primary-guinda); 
+            text-transform: uppercase; 
+            font-weight: bold; 
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+        .subtitulo-institucional {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            font-weight: bold;
+        }
         
         /* Sistema de Pestañas (Tabs) */
         .tabs { display: flex; gap: 10px; margin-bottom: 25px; }
@@ -33,16 +58,32 @@
         .btn-enviar:disabled { background-color: #a5d6a7; cursor: not-allowed; }
         
         /* Mensaje de Carga de Datos */
-        #loading { text-align: center; color: #0056b3; font-weight: bold; margin-bottom: 15px; display: block; background: #e3f2fd; padding: 10px; border-radius: 6px; }
+        #loading { text-align: center; color: var(--primary-guinda); font-weight: bold; margin-bottom: 15px; display: block; background: #fdf2f4; padding: 10px; border-radius: 6px; border: 1px solid #f8bbd0; }
+
+        /* Estilo del pie de página */
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            margin-top: 35px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 15px;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="institucion">Escuela Secundaria Técnica Num. 18</div>
+    <!-- Encabezado con Logotipo Oficial de Secundarias Técnicas -->
+    <div class="header-institucional">
+        <img class="logo-tecnicas" src="https://upload.wikimedia.org/wikipedia/commons/4/47/Logo_de_las_Secundarias_T%C3%A9cnicas.svg" alt="Logo Secundarias Técnicas">
+        <div class="institucion">Escuela Secundaria Técnica Num. 18</div>
+        <div class="subtitulo-institucional">CONTROL DE SERVICIOS DIGITALES</div>
+    </div>
     
     <!-- Alerta de conexión inicial con Google Sheets -->
-    <div id="loading">⏳ Conectando con la base de datos de alumnos...</div>
+    <div id="loading">⏳ Sincronizando Base de Datos de Alumnos con el Servidor...</div>
 
     <div class="tabs">
         <button class="tab-btn active-sec" id="btnSec" onclick="cambiarPestaña('SEC')">📋 Reportes SEC</button>
@@ -53,21 +94,21 @@
     <div id="sectionSEC" class="form-section active">
         <h2 style="color: var(--primary-sec); text-align: center; margin-top:0;">Servicio Educativo Complementario</h2>
         <form id="formSEC">
-            <label for="buscarSEC">Buscar por Matrícula o Nombre:</label>
-            <input type="text" id="buscarSEC" list="listaAlumnosData" placeholder="Escribe la matrícula o nombre..." onchange="autocompletar('SEC')" required>
+            <label for="buscarSEC">Buscar por Matrícula o Nombre del Alumno:</label>
+            <input type="text" id="buscarSEC" list="listaAlumnosData" placeholder="Escribe para buscar..." onchange="autocompletar('SEC')" required>
 
             <label for="grupoSEC">Grado y Grupo:</label>
-            <input type="text" id="grupoSEC" readonly placeholder="Se autocompleta al elegir alumno">
+            <input type="text" id="grupoSEC" readonly placeholder="Se autocompleta automáticamente">
 
             <label for="tutorSEC">Nombre del Tutor:</label>
-            <input type="text" id="tutorSEC" readonly placeholder="Se autocompleta al elegir alumno">
+            <input type="text" id="tutorSEC" readonly placeholder="Se autocompleta automáticamente">
 
             <label for="telefonoSEC">Teléfono del Tutor:</label>
-            <input type="text" id="telefonoSEC" readonly placeholder="Se autocompleta al elegir alumno">
+            <input type="text" id="telefonoSEC" readonly placeholder="Se autocompleta automáticamente">
 
             <label for="incidencia">Tipo de Incidencia:</label>
             <select id="incidencia" required>
-                <option value="">Selecciona...</option>
+                <option value="">Selecciona una opción...</option>
                 <option value="Inasistencia">Inasistencia</option>
                 <option value="Retardo">Retardo</option>
                 <option value="Falta de Tarea">Falta de Tarea</option>
@@ -75,10 +116,10 @@
                 <option value="Felicitación Académica">Felicitación Académica</option>
             </select>
 
-            <label for="detallesSEC">Detalles / Observaciones:</label>
-            <textarea id="detallesSEC" rows="4" placeholder="Describe brevemente la situación o acuerdos..." required></textarea>
+            <label for="detallesSEC">Detalles / Observaciones Generales:</label>
+            <textarea id="detallesSEC" rows="4" placeholder="Describe los acuerdos tomados o la situación detallada..." required></textarea>
 
-            <button type="button" class="btn-enviar" id="submitSEC" onclick="enviarFormulario('SEC')">Guardar y Enviar Alerta</button>
+            <button type="button" class="btn-enviar" id="submitSEC" onclick="enviarFormulario('SEC')">Guardar Registro y Enviar Alerta</button>
         </form>
     </div>
 
@@ -86,33 +127,39 @@
     <div id="sectionMEDICO" class="form-section">
         <h2 style="color: var(--primary-med); text-align: center; margin-top:0;">Atención Médica Escolar</h2>
         <form id="formMEDICO">
-            <label for="buscarMED">Buscar por Matrícula o Nombre:</label>
-            <input type="text" id="buscarMED" list="listaAlumnosData" placeholder="Escribe la matrícula o nombre..." onchange="autocompletar('MEDICO')" required>
+            <label for="buscarMED">Buscar por Matrícula o Nombre del Alumno:</label>
+            <input type="text" id="buscarMED" list="listaAlumnosData" placeholder="Escribe para buscar..." onchange="autocompletar('MEDICO')" required>
 
             <label for="grupoMED">Grado y Grupo:</label>
-            <input type="text" id="grupoMED" readonly placeholder="Se autocompleta al elegir alumno">
+            <input type="text" id="grupoMED" readonly placeholder="Se autocompleta automáticamente">
 
             <label for="tutorMED">Nombre del Tutor:</label>
-            <input type="text" id="tutorMED" readonly placeholder="Se autocompleta al elegir alumno">
+            <input type="text" id="tutorMED" readonly placeholder="Se autocompleta automáticamente">
 
             <label for="telefonoMED">Teléfono del Tutor:</label>
-            <input type="text" id="telefonoMED" readonly placeholder="Se autocompleta al elegir alumno">
+            <input type="text" id="telefonoMED" readonly placeholder="Se autocompleta automáticamente">
 
-            <label for="motivo">Motivo de la Visita:</label>
-            <input type="text" id="motivo" placeholder="Ej. Dolor de estómago, torcedura..." required>
+            <label for="motivo">Motivo de la Consulta / Visita:</label>
+            <input type="text" id="motivo" placeholder="Ej. Síntomas de gripe, torcedura por caída, etc." required>
 
-            <label for="tratamiento">Tratamiento Brindado:</label>
-            <textarea id="tratamiento" rows="3" placeholder="Ej. Se le tomó la temperatura y se le dio reposo..." required></textarea>
+            <label for="tratamiento">Tratamiento o Atención Brindada:</label>
+            <textarea id="tratamiento" rows="3" placeholder="Ej. Se tomaron signos vitales, reposo en camilla..." required></textarea>
 
-            <label for="estatus">Estatus de Salida:</label>
+            <label for="estatus">Estatus de Egreso del Alumno:</label>
             <select id="estatus" required>
-                <option value="">Selecciona...</option>
+                <option value="">Selecciona una opción...</option>
                 <option value="Regresa a clases en observación">Regresa a clases en observación</option>
-                <option value="Se solicita que el tutor pase a recogerlo inmediatamente">⚠️ REQUERIDO: El tutor debe pasar a recogerlo</option>
+                <option value="Se solicita que el tutor pase a recogerlo inmediatamente">⚠️ REQUERIDO: El tutor debe acudir por el alumno</option>
             </select>
 
-            <button type="button" class="btn-enviar" id="submitMEDICO" onclick="enviarFormulario('MEDICO')">Guardar y Avisar al Tutor</button>
+            <button type="button" class="btn-enviar" id="submitMEDICO" onclick="enviarFormulario('MEDICO')">Guardar Registro y Avisar al Tutor</button>
         </form>
+    </div>
+
+    <!-- Pie de página institucional del Departamento de Tecnología -->
+    <div class="footer">
+        Departamento de Tecnología<br>
+        <strong>MTI. Francisco Cota Toledo</strong>
     </div>
 </div>
 
@@ -136,7 +183,7 @@
             const datalist = document.getElementById('listaAlumnosData');
             alumnosDB.forEach(alumno => {
                 let option = document.createElement('option');
-                // Formato de sugerencia visual: "2601 - SEBASTIAN JIMENEZ SANTIAGO"
+                // Formato de sugerencia visual: "202601 - SEBASTIAN JIMENEZ SANTIAGO"
                 option.value = `${alumno.matricula} - ${alumno.nombre}`;
                 datalist.appendChild(option);
             });
@@ -150,7 +197,7 @@
         });
     };
 
-    // Función inteligente de auto-rellenado (Busca matrícula, nombre o formato combinado)
+    // Función de auto-rellenado (Busca matrícula, nombre o formato combinado)
     function autocompletar(modulo) {
         const valorBuscado = document.getElementById(`buscar${modulo}`).value.toUpperCase().trim();
         
@@ -245,7 +292,7 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(datos)
         }).then(() => {
-            boton.innerText = modulo === 'SEC' ? "Guardar y Enviar Alerta" : "Guardar y Avisar al Tutor";
+            boton.innerText = modulo === 'SEC' ? "Guardar Registro y Enviar Alerta" : "Guardar Registro y Avisar al Tutor";
             boton.disabled = false;
             
             // Lanzar WhatsApp Web o la App móvil
